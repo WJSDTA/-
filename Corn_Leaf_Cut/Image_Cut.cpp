@@ -52,7 +52,7 @@ void thresh_callback(int, void*)
 	/// 使用Threshold检测边缘
 	threshold(src_gray, threshold_output, thresh, 255, THRESH_BINARY);//进行二值化处理
 	/// 找到轮廓
-	findContours(threshold_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));//寻找轮廓
+	findContours(threshold_output, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));//寻找轮廓
 
 	/// 多边形逼近轮廓 + 获取矩形和圆形边界框
 	vector<vector<Point> > contours_poly(contours.size());

@@ -30,6 +30,9 @@
     <ClCompile Include="content_Cut.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Find_Edge_Copy.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

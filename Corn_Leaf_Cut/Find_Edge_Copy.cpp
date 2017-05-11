@@ -74,15 +74,14 @@ void FindEdge(Mat& image) {
 	image = abs_dst;
 }
 
-void ImageCut(Mat img,Mat image) {
+void ImageCut(Mat img, Mat image) {
 	Mat threshold_output;
 	vector<vector<Point> > contours;
 	vector<Vec4i> hierarchy;
 	Mat src_gray = img;
-	imshow("src_gray", img);
 	/// 使用Threshold检测边缘
 	threshold(src_gray, threshold_output, thresh, 255, THRESH_BINARY);//进行二值化处理
-	//threshold_output = img;												  /// 找到轮廓
+																	//  	threshold_output = img;												  /// 找到轮廓
 	findContours(threshold_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));//寻找轮廓
 
 																										   /// 多边形逼近轮廓 + 获取矩形和圆形边界框
@@ -110,7 +109,7 @@ void ImageCut(Mat img,Mat image) {
 
 		if (boundRect[i].area() > 1000) //对所取得的轮廓进行筛选，过滤掉一些面积过小的区域
 		{
-           /*
+
 			cout << i << endl;
 			cv::Mat imageROI = image(boundRect[i]);//根据轮廓外接矩形信息进行截取RIO感兴趣部分图像
 			std::stringstream ss;//int转换为string
@@ -118,48 +117,28 @@ void ImageCut(Mat img,Mat image) {
 			ss << i;
 			ss >> str;
 			imshow(str, imageROI);   //对切割的图像进行多窗口的展示
-
-			*/
-/*
-			Mat hole(src_gray.size(), CV_8U, Scalar(0)); //遮罩图层  
-			cv::drawContours(hole, contours_poly, i, Scalar(255), CV_FILLED); //在遮罩图层上，用白色像素填充轮廓  
-			namedWindow("My hole");
-			imshow("My hole", hole);
-			Mat crop(image.rows, image.cols, CV_8UC3);
-			image.copyTo(crop, hole);//将原图像拷贝进遮罩图层  
-
-
-			cout << i << endl;
-			cv::Mat imageROI = image(boundRect[i]);//根据轮廓外接矩形信息进行截取RIO感兴趣部分图像
-			std::stringstream ss;//int转换为string
-			std::string str;
-			ss << i;
-			ss >> str;
-			imshow(str, crop);   //对切割的图像进行多窗口的展示
 		}
 	}
 
 	/// 显示在一个窗口
 	namedWindow("Contours", CV_WINDOW_AUTOSIZE);
 	imshow("Contours", drawing);
-	
 }
-
 
 int main()
 {
-	Mat img = imread("F://test123.jpg");
-	Mat image = img;
-	imshow("原画", img);
-	
-	FindEdge(img);
+Mat img = imread("F://test123.jpg");
+Mat image = img;
+imshow("原画", img);
+
+FindEdge(img);
 
 
-	imshow("testX", img);
-	Mat img2 = imread("F://10086.jpg");
-	ImageCut(img,image);
-	//imwrite("10086.jpg", abs_dst);
-	waitKey();
-	return 0;
+imshow("testX", img);
+Mat img2 = imread("F://10086.jpg");
+ImageCut(img2,image);
+//imwrite("10086.jpg", abs_dst);
+waitKey();
+return 0;
 }
 */
