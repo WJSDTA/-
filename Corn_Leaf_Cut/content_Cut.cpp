@@ -1,3 +1,4 @@
+/*
 #include "opencv2/imgproc.hpp"  
 #include "opencv2/highgui.hpp"  
 #include <iostream>  
@@ -39,6 +40,7 @@ void main() {
 	//contours2.push_back(contours1[i]);  
 	//}  
 	//}  
+/*
 	Mat hole(gray.size(), CV_8U, Scalar(0)); //ÕÚÕÖÍ¼²ã  
 	cv::drawContours(hole, contours1, -1, Scalar(255), CV_FILLED); //ÔÚÕÚÕÖÍ¼²ãÉÏ£¬ÓÃ°×É«ÏñËØÌî³äÂÖÀª  
 	namedWindow("My hole");
@@ -48,4 +50,4 @@ void main() {
 	namedWindow("My warpPerspective");
 	imshow("My warpPerspective", crop);
 	waitKey(0);
-}
+}*/

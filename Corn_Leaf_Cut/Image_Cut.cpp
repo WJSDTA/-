@@ -1,6 +1,6 @@
 /*此为主要代码*/
 /*此代码用来实现从寻找轮廓的边缘，并且寻找图像的轮廓，并从原图中根据轮廓把图像切割出来*/
-/*
+
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include <iostream>
@@ -77,16 +77,31 @@ void thresh_callback(int, void*)
 		rectangle(drawing, boundRect[i].tl(), boundRect[i].br(), color, 2, 8, 0);
 		boundRect[i] = boundingRect(Mat(contours_poly[i]));//得到轮廓外接矩形数据结构
 
+		
+
 		if (boundRect[i].area() > 1000) //对所取得的轮廓进行筛选，过滤掉一些面积过小的区域
 		{
+			
+			
 
+			
+			Mat hole(src_gray.size(), CV_8U, Scalar(0)); //遮罩图层  
+			cv::drawContours(hole, contours_poly, i, Scalar(255), CV_FILLED); //在遮罩图层上，用白色像素填充轮廓  
+			namedWindow("My hole");
+			imshow("My hole", hole);
+			Mat crop(image.rows, image.cols, CV_8UC3);
+			image.copyTo(crop, hole);//将原图像拷贝进遮罩图层  
+
+       
 			cout << i << endl;
 			cv::Mat imageROI = image(boundRect[i]);//根据轮廓外接矩形信息进行截取RIO感兴趣部分图像
 			std::stringstream ss;//int转换为string
 			std::string str;
 			ss << i;
 			ss >> str;
-			imshow(str, imageROI);   //对切割的图像进行多窗口的展示
+			imshow(str, crop);   //对切割的图像进行多窗口的展示
+			
+			
 		}
 	}
 
@@ -94,4 +109,3 @@ void thresh_callback(int, void*)
 	namedWindow("Contours", CV_WINDOW_AUTOSIZE);
 	imshow("Contours", drawing);
 }
-*/
