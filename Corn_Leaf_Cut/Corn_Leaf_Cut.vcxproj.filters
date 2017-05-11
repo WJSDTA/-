@@ -21,6 +21,15 @@
     <ClCompile Include="Image_Cut.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="CutTest.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MouseCutTestcpp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="content_Cut.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

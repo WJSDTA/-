@@ -146,8 +146,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="content_Cut.cpp" />
+    <ClCompile Include="CutTest.cpp" />
     <ClCompile Include="Find_Edge.cpp" />
     <ClCompile Include="Image_Cut.cpp" />
+    <ClCompile Include="MouseCutTestcpp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
