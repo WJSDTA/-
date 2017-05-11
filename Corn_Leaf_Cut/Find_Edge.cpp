@@ -1,4 +1,4 @@
-/*
+
 #include<iostream>
 #include<opencv2/core/core.hpp>
 #include<opencv2/highgui/highgui.hpp>
@@ -83,7 +83,7 @@ void ImageCut(Mat img,Mat image) {
 	/// 使用Threshold检测边缘
 	threshold(src_gray, threshold_output, thresh, 255, THRESH_BINARY);//进行二值化处理
 	//threshold_output = img;												  /// 找到轮廓
-	findContours(threshold_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));//寻找轮廓
+	findContours(threshold_output, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));//寻找轮廓
 
 																										   /// 多边形逼近轮廓 + 获取矩形和圆形边界框
 	vector<vector<Point> > contours_poly(contours.size());
@@ -120,7 +120,7 @@ void ImageCut(Mat img,Mat image) {
 			imshow(str, imageROI);   //对切割的图像进行多窗口的展示
 
 			*/
-/*
+
 			Mat hole(src_gray.size(), CV_8U, Scalar(0)); //遮罩图层  
 			cv::drawContours(hole, contours_poly, i, Scalar(255), CV_FILLED); //在遮罩图层上，用白色像素填充轮廓  
 			namedWindow("My hole");
@@ -148,7 +148,7 @@ void ImageCut(Mat img,Mat image) {
 
 int main()
 {
-	Mat img = imread("F://test123.jpg");
+	Mat img = imread("F://2017051102.jpg");
 	Mat image = img;
 	imshow("原画", img);
 	
@@ -162,4 +162,3 @@ int main()
 	waitKey();
 	return 0;
 }
-*/
