@@ -23,7 +23,8 @@ void thresh_callback(int, void*);
 int main(int argc, char** argv)
 {
 	/// 载入原图像, 返回3通道图像
-	src = imread("F:\\10086.jpg");
+	src = imread("F:\\1.png");
+
 
 	/// 转化成灰度图像并进行平滑
 	cvtColor(src, src_gray, CV_BGR2GRAY);

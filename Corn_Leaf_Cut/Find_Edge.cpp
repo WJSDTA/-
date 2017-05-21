@@ -1,4 +1,3 @@
-
 #include<iostream>
 #include<opencv2/core/core.hpp>
 #include<opencv2/highgui/highgui.hpp>
@@ -18,7 +17,6 @@ void FindEdge(Mat& image) {
 	//进行形态学操作
 	morphologyEx(bilateralFilter_img, bilateralFilter_img, MORPH_CLOSE, element);//闭运算
 	img = bilateralFilter_img;
-
 	for (int row = 0; row < img.rows; row++)
 	{
 		for (int col = 0; col < img.cols; col++)
@@ -36,7 +34,7 @@ void FindEdge(Mat& image) {
 		}
 	}
 
-	imshow("新图x", img);
+	imshow("背景去除", img);
 
 	//【4】转换为灰度图
 	cvtColor(img, img_gray, CV_RGB2GRAY);
@@ -46,7 +44,7 @@ void FindEdge(Mat& image) {
 
 	//【6】计算绝对值，并将结果转换成8位
 	convertScaleAbs(dst, abs_dst);
-	imshow("新图", abs_dst);
+	//imshow("新图", abs_dst);
 
 	Mat mergeImg;//合并后的图像
 				 //用来存储各通道图片的向量
@@ -60,21 +58,20 @@ void FindEdge(Mat& image) {
 	merge(splitBGR, mergeImg);
 
 	//namedWindow("equalizeHist");
-	imshow("equalizeHist", mergeImg);
+	imshow("直方图均衡化之后", mergeImg);
 
 	//【4】转换为灰度图
 	cvtColor(mergeImg, img_gray, CV_RGB2GRAY);
 
 	//【5】使用Laplace函数
 	Laplacian(img_gray, dst, CV_16S, 3, 1, 0, BORDER_DEFAULT);
-
 	//【6】计算绝对值，并将结果转换成8位
 	convertScaleAbs(dst, abs_dst);
-	imshow("新图", abs_dst);
+	//imshow("新图", abs_dst);
 	image = abs_dst;
 }
 
-void ImageCut(Mat img,Mat image) {
+void ImageCut(Mat img,Mat image,int WR) {
 	Mat threshold_output;
 	vector<vector<Point> > contours;
 	vector<Vec4i> hierarchy;
@@ -94,22 +91,25 @@ void ImageCut(Mat img,Mat image) {
 	for (int i = 0; i < contours.size(); i++)
 	{
 		approxPolyDP(Mat(contours[i]), contours_poly[i], 3, true);
-		boundRect[i] = boundingRect(Mat(contours_poly[i]));
+		boundRect[i] = boundingRect(Mat(contours_poly[i]));//计算点集的最外面矩形边界
 		//minEnclosingCircle(contours_poly[i], center[i], radius[i]);
 	}
 
 	//Mat image = imread("F://test1.jpg");;
 	/// 画多边形轮廓 + 包围的矩形框 + 圆形框
-	Mat drawing = Mat::zeros(threshold_output.size(), CV_8UC3);
+	Mat drawing = Mat::zeros(threshold_output.size(), CV_8UC3); //创建一个相同大小图片
 	for (int i = 0; i < contours.size(); i++)
 	{
+		int j = 0;
 		Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
 		drawContours(drawing, contours_poly, i, color, 1, 8, vector<Vec4i>(), 0, Point());
-		rectangle(drawing, boundRect[i].tl(), boundRect[i].br(), color, 2, 8, 0);
+		rectangle(drawing, boundRect[i].tl(), boundRect[i].br(), color, 2, 8, 0);//绘制矩形
 		boundRect[i] = boundingRect(Mat(contours_poly[i]));//得到轮廓外接矩形数据结构
+		cout << boundRect[i].br() << endl;
 
 		if (boundRect[i].area() > 1000) //对所取得的轮廓进行筛选，过滤掉一些面积过小的区域
 		{
+			//方案一：矩形截取叶片
            /*
 			cout << i << endl;
 			cv::Mat imageROI = image(boundRect[i]);//根据轮廓外接矩形信息进行截取RIO感兴趣部分图像
@@ -118,47 +118,51 @@ void ImageCut(Mat img,Mat image) {
 			ss << i;
 			ss >> str;
 			imshow(str, imageROI);   //对切割的图像进行多窗口的展示
-
 			*/
 
 			Mat hole(src_gray.size(), CV_8U, Scalar(0)); //遮罩图层  
 			cv::drawContours(hole, contours_poly, i, Scalar(255), CV_FILLED); //在遮罩图层上，用白色像素填充轮廓  
-			namedWindow("My hole");
-			imshow("My hole", hole);
-			Mat crop(image.rows, image.cols, CV_8UC3);
+		//	namedWindow("My hole");
+		//	imshow("My hole", hole);
+			Mat crop(image.rows, image.cols, CV_8UC3);//八位无符号整形
 			image.copyTo(crop, hole);//将原图像拷贝进遮罩图层  
-
-
-			cout << i << endl;
+          	cout << i << endl;		
 			cv::Mat imageROI = image(boundRect[i]);//根据轮廓外接矩形信息进行截取RIO感兴趣部分图像
 			std::stringstream ss;//int转换为string
 			std::string str;
 			ss << i;
 			ss >> str;
-			imshow(str, crop);   //对切割的图像进行多窗口的展示
+			if (WR == 1)
+			{
+				String name = "裁剪";
+				imshow(name + str + ".jpg", crop);   //对切割的图像进行多窗口的展示
+			}
+			else
+			{
+				imwrite("F://result//" + str + ".jpg", crop);//写入文件夹
+			}
+			
+			//imwrite("F://result//" + str + ".jpg", crop);//写入文件夹
 		}
 	}
 
 	/// 显示在一个窗口
-	namedWindow("Contours", CV_WINDOW_AUTOSIZE);
-	imshow("Contours", drawing);
+	//namedWindow("Contours", CV_WINDOW_AUTOSIZE);
+	imshow("轮廓标注图", drawing);
 	
 }
 
 
 int main()
 {
-	Mat img = imread("F://2017051102.jpg");
+	Mat img = imread("F://2017051703.jpg");
 	Mat image = img;
+	namedWindow("原画");
 	imshow("原画", img);
-	
 	FindEdge(img);
-
-
-	imshow("testX", img);
-	Mat img2 = imread("F://10086.jpg");
-	ImageCut(img,image);
-	//imwrite("10086.jpg", abs_dst);
+	//imshow("testX", img);
+	//Mat img2 = imread("F://10086.jpg");
+	ImageCut(img,image,1);//1,展示文件，2写文件
 	waitKey();
 	return 0;
 }
