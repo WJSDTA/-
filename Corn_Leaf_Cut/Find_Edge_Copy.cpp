@@ -1,3 +1,4 @@
+/*²âÊÔ´úÂë£¬ÎŞÓÃ*/
 /*
 #include<iostream>
 #include<opencv2/core/core.hpp>

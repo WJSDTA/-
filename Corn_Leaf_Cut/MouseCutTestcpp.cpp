@@ -1,3 +1,4 @@
+/*²âÊÔ´úÂë£¬ÎŞÓÃ*/
 /*#include "cv.h"  
 #include "highgui.h"  
 #include <stdio.h>  

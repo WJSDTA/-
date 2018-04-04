@@ -1,3 +1,4 @@
+/*²âÊÔ´úÂë£¬ÎŞÓÃ*/
 /*
 #include "opencv2/imgproc.hpp"  
 #include "opencv2/highgui.hpp"  
